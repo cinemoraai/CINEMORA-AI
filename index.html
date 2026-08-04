@@ -7,12 +7,12 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#050507;color:#fff;min-height:100vh;display:flex}
-.sidebar{width:220px;background:#0a0a0f;border-right:1px solid #1a1a1f;padding:20px;display:flex;flex-direction:column}
+.sidebar{width:220px;background:#0a0a0f;border-right:1px solid #1a1a1f;padding:20px;display:flex;flex-direction:column;flex-shrink:0}
 .logo{font-size:20px;font-weight:800;margin-bottom:30px}
 .logo span{color:#7c3aed}
 .nav a{display:block;padding:12px;border-radius:10px;color:#888;text-decoration:none;margin-bottom:6px;font-size:14px}
 .nav a.active{background:#15151c;color:#fff}
-.main{flex:1;padding:24px;overflow-y:auto}
+.main{flex:1;padding:24px;overflow-y:auto;min-width:0}
 .top{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 .box{background:#11111a;border:1px solid #1f1f28;border-radius:14px;padding:16px}
 .box h3{font-size:22px}
@@ -34,63 +34,80 @@ textarea{width:100%;background:#0a0a0f;border:1px solid #232330;border-radius:12
 .link{color:#a78bfa;text-align:center;display:block;margin-top:10px;font-size:12px;cursor:pointer}
 #dash{display:none;width:100%}
 #auth{display:flex}
-</style>
-</head>
-<body>
-<div id="auth" class="auth">
-<div class="auth-card">
-<h1 style="text-align:center">🎬 CINEMORA AI</h1>
-<p style="text-align:center;color:#666;font-size:11px;margin:6px 0 16px">Professional AI Video Studio</p>
-<h3 id="at" style="text-align:center;margin-bottom:12px;font-size:14px">Welcome Back</h3>
-<input id="email" type="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button id="ab">Login</button>
-<span class="link" id="ta">Don't have account? Create Account</span>
-<p id="am" style="text-align:center;margin-top:8px;font-size:11px;color:#ff6b6b"></p>
-</div>
-</div>
-<div id="dash" style="display:none;width:100%">
-<div class="sidebar">
-<div class="logo">🎬 <span>CINEMORA</span> AI</div>
-<div class="nav"><a class="active">🎥 Studio</a><a>📁 My Videos</a><a>🎨 Templates</a><a>⚙️ Settings</a></div>
-<div class="user"><div style="width:28px;height:28px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">P</div><div style="flex:1;overflow:hidden"><div id="ue" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div><div style="font-size:9px;color:#666">PRO Plan</div></div><button id="lo" style="background:#1f1f28;border:none;color:#fff;padding:5px 8px;border-radius:6px;font-size:10px;cursor:pointer">Logout</button></div>
-</div>
-<div class="main">
-<div class="top"><div class="box"><h3>24</h3><p>Videos Generated</p></div><div class="box"><h3>850</h3><p>Credits Left</p></div><div class="box"><h3>12h</h3><p>Time Saved</p></div></div>
-<div class="card">
-<h2 style="font-size:16px;margin-bottom:12px">✨ AI Video Generator</h2>
-<textarea id="pr" rows="3" placeholder="A cute baby laughing in sunny garden, cinematic 4K..."></textarea>
-<div class="pills" id="sp"><div class="pill active">Cinematic</div><div class="pill">Anime</div><div class="pill">Realistic</div><div class="pill">3D</div></div>
-<div style="display:flex;gap:8px;margin:12px 0"><div style="background:#0a0a0f;border:1px solid #232330;border-radius:10px;padding:8px 10px"><label style="font-size:9px;color:#666">RATIO</label><div class="pills" style="margin:4px 0 0"><div class="pill active">16:9</div><div class="pill">9:16</div></div></div><div style="background:#0a0a0f;border:1px solid #232330;border-radius:10px;padding:8px 10px"><label style="font-size:9px;color:#666">QUALITY</label><div class="pills" style="margin:4px 0 0"><div class="pill">HD</div><div class="pill active">4K</div></div></div></div>
-<button id="gb" class="btn">🚀 Generate AI Video</button>
-<div class="progress" id="pw"><div id="pb"></div></div>
-<div id="result"></div>
-</div>
-</div>
-</div>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyAXtzsTkbgfsaiKzmlEwdDGqIpbzP4FsHQ",
-    authDomain: "cinemora-ai-14d81.firebaseapp.com",
-      projectId: "cinemora-ai-14d81",
-        storageBucket: "cinemora-ai-14d81.firebasestorage.app",
-          messagingSenderId: "1032996592948",
-            appId: "1:1032996592948:web:b3d43cc3e6f6b8d60a5961",
-              measurementId: "G-PLKW7HW5P0"
-              };
-              const app = initializeApp(firebaseConfig);
-              const auth = getAuth(app);
-              const e1=document.getElementById('email'),p1=document.getElementById('password'),ab=document.getElementById('ab'),ta=document.getElementById('ta'),at=document.getElementById('at'),am=document.getElementById('am'),ad=document.getElementById('auth'),dd=document.getElementById('dash'),ue=document.getElementById('ue'),lo=document.getElementById('lo');
-              let isL=true;
-              ta.onclick=()=>{isL=!isL;at.innerText=isL?"Welcome Back":"Create Account";ab.innerText=isL?"Login":"Create Account";ta.innerText=isL?"Don't have account? Create Account":"Already have account? Login";am.innerText=""};
-              ab.onclick=async()=>{const e=e1.value.trim(),p=p1.value.trim();if(!e||!p){am.innerText="Fill email and password";return}am.innerText="Please wait...";ab.disabled=true;try{if(isL)await signInWithEmailAndPassword(auth,e,p);else await createUserWithEmailAndPassword(auth,e,p);am.innerText=""}catch(err){am.innerText=err.message}finally{ab.disabled=false}};
-              lo.onclick=async()=>{await signOut(auth)};
-              onAuthStateChanged(auth,(u)=>{if(u){ad.style.display="none";dd.style.display="flex";ue.innerText=u.email}else{ad.style.display="flex";dd.style.display="none"}});
-              const gb=document.getElementById('gb'),pr=document.getElementById('pr'),rb=document.getElementById('result'),pw=document.getElementById('pw'),pb=document.getElementById('pb');
-              document.querySelectorAll('#sp .pill').forEach(p=>{p.onclick=()=>{document.querySelectorAll('#sp .pill').forEach(x=>x.classList.remove('active'));p.classList.add('active')}});
-              gb.addEventListener('click',()=>{const prompt=pr.value.trim();if(!prompt){alert('Write prompt!');return}gb.disabled=true;gb.innerText='⏳ Generating...';rb.style.display='none';pw.style.display='block';pb.style.width='0%';let w=0;const iv=setInterval(()=>{w+=10;pb.style.width=w+'%';if(w>=100){clearInterval(iv);pw.style.display='none';rb.style.display='block';rb.innerHTML=`<strong>✅ Video Generated!</strong><div style="font-size:11px;color:#888;margin:4px 0">${prompt}</div><div style="background:#000;border:1px dashed #333;height:140px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-top:8px">🎬 Your AI Video Ready</div>`;gb.disabled=false;gb.innerText='🚀 Generate AI Video'}},200)});
-              </script>
-              </body>
-              </html>
+.mobile-top{display:none}
+/* PHONE FIX */
+@media (max-width: 768px){
+  body{flex-direction:column}
+    .sidebar{width:100%;padding:12px;border-right:none;border-bottom:1px solid #1a1a1f;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+      .sidebar .logo{margin-bottom:0;font-size:16px}
+        .sidebar .nav{display:flex;gap:6px;overflow-x:auto}
+          .sidebar .nav a{padding:8px 10px;white-space:nowrap;margin-bottom:0;font-size:12px}
+            .sidebar .user{display:none}
+              .main{padding:12px}
+                .top{grid-template-columns:repeat(3,1fr);gap:8px}
+                  .box{padding:10px}
+                    .box h3{font-size:16px}
+                      .mobile-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+                        .card{padding:14px}
+                        }
+                        </style>
+                        </head>
+                        <body>
+                        <div id="auth" class="auth">
+                        <div class="auth-card">
+                        <h1 style="text-align:center">🎬 CINEMORA AI</h1>
+                        <p style="text-align:center;color:#666;font-size:11px;margin:6px 0 16px">Professional AI Video Studio</p>
+                        <h3 id="at" style="text-align:center;margin-bottom:12px;font-size:14px">Welcome Back</h3>
+                        <input id="email" type="email" placeholder="Email">
+                        <input id="password" type="password" placeholder="Password">
+                        <button id="ab">Login</button>
+                        <span class="link" id="ta">Don't have account? Create Account</span>
+                        <p id="am" style="text-align:center;margin-top:8px;font-size:11px;color:#ff6b6b"></p>
+                        </div>
+                        </div>
+                        <div id="dash" style="display:none;width:100%">
+                        <div class="sidebar">
+                        <div class="logo">🎬 <span>CINEMORA</span> AI</div>
+                        <div class="nav"><a class="active">🎥 Studio</a><a>📁 Videos</a><a>🎨 Templates</a><a>⚙️ Settings</a></div>
+                        <div class="user"><div style="width:28px;height:28px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">P</div><div style="flex:1;overflow:hidden"><div id="ue" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div><div style="font-size:9px;color:#666">PRO Plan</div></div><button id="lo" style="background:#1f1f28;border:none;color:#fff;padding:5px 8px;border-radius:6px;font-size:10px;cursor:pointer">Logout</button></div>
+                        </div>
+                        <div class="main">
+                        <div class="mobile-top"><div style="font-size:12px;color:#888">Welcome, <span id="ue2" style="color:#fff"></span></div><button id="lo2" style="background:#1f1f28;border:none;color:#fff;padding:6px 10px;border-radius:6px;font-size:10px">Logout</button></div>
+                        <div class="top"><div class="box"><h3>24</h3><p>Videos Generated</p></div><div class="box"><h3>850</h3><p>Credits Left</p></div><div class="box"><h3>12h</h3><p>Time Saved</p></div></div>
+                        <div class="card">
+                        <h2 style="font-size:16px;margin-bottom:12px">✨ AI Video Generator</h2>
+                        <textarea id="pr" rows="3" placeholder="A cute baby laughing in sunny garden, cinematic 4K..."></textarea>
+                        <div class="pills" id="sp"><div class="pill active">Cinematic</div><div class="pill">Anime</div><div class="pill">Realistic</div><div class="pill">3D</div></div>
+                        <div style="display:flex;gap:8px;margin:12px 0"><div style="flex:1;background:#0a0a0f;border:1px solid #232330;border-radius:10px;padding:8px 10px"><label style="font-size:9px;color:#666">RATIO</label><div class="pills" style="margin:4px 0 0"><div class="pill active">16:9</div><div class="pill">9:16</div></div></div><div style="flex:1;background:#0a0a0f;border:1px solid #232330;border-radius:10px;padding:8px 10px"><label style="font-size:9px;color:#666">QUALITY</label><div class="pills" style="margin:4px 0 0"><div class="pill">HD</div><div class="pill active">4K</div></div></div></div>
+                        <button id="gb" class="btn">🚀 Generate AI Video</button>
+                        <div class="progress" id="pw"><div id="pb"></div></div>
+                        <div id="result"></div>
+                        </div>
+                        </div>
+                        </div>
+                        <script type="module">
+                        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+                        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+                        const firebaseConfig = {
+                          apiKey: "AIzaSyAXtzsTkbgfsaiKzmlEwdDGqIpbzP4FsHQ",
+                            authDomain: "cinemora-ai-14d81.firebaseapp.com",
+                              projectId: "cinemora-ai-14d81",
+                                storageBucket: "cinemora-ai-14d81.firebasestorage.app",
+                                  messagingSenderId: "1032996592948",
+                                    appId: "1:1032996592948:web:b3d43cc3e6f6b8d60a5961",
+                                      measurementId: "G-PLKW7HW5P0"
+                                      };
+                                      const app = initializeApp(firebaseConfig);
+                                      const auth = getAuth(app);
+                                      const e1=document.getElementById('email'),p1=document.getElementById('password'),ab=document.getElementById('ab'),ta=document.getElementById('ta'),at=document.getElementById('at'),am=document.getElementById('am'),ad=document.getElementById('auth'),dd=document.getElementById('dash'),ue=document.getElementById('ue'),ue2=document.getElementById('ue2'),lo=document.getElementById('lo'),lo2=document.getElementById('lo2');
+                                      let isL=true;
+                                      ta.onclick=()=>{isL=!isL;at.innerText=isL?"Welcome Back":"Create Account";ab.innerText=isL?"Login":"Create Account";ta.innerText=isL?"Don't have account? Create Account":"Already have account? Login";am.innerText=""};
+                                      ab.onclick=async()=>{const e=e1.value.trim(),p=p1.value.trim();if(!e||!p){am.innerText="Fill email and password";return}am.innerText="Please wait...";ab.disabled=true;try{if(isL)await signInWithEmailAndPassword(auth,e,p);else await createUserWithEmailAndPassword(auth,e,p);am.innerText=""}catch(err){am.innerText=err.message}finally{ab.disabled=false}};
+                                      const logout=async()=>{await signOut(auth)};lo.onclick=logout;lo2.onclick=logout;
+                                      onAuthStateChanged(auth,(u)=>{if(u){ad.style.display="none";dd.style.display="flex";ue.innerText=u.email;ue2.innerText=u.email}else{ad.style.display="flex";dd.style.display="none"}});
+                                      const gb=document.getElementById('gb'),pr=document.getElementById('pr'),rb=document.getElementById('result'),pw=document.getElementById('pw'),pb=document.getElementById('pb');
+                                      document.querySelectorAll('#sp .pill').forEach(p=>{p.onclick=()=>{document.querySelectorAll('#sp .pill').forEach(x=>x.classList.remove('active'));p.classList.add('active')}});
+                                      gb.addEventListener('click',()=>{const prompt=pr.value.trim();if(!prompt){alert('Write prompt!');return}gb.disabled=true;gb.innerText='⏳ Generating...';rb.style.display='none';pw.style.display='block';pb.style.width='0%';let w=0;const iv=setInterval(()=>{w+=10;pb.style.width=w+'%';if(w>=100){clearInterval(iv);pw.style.display='none';rb.style.display='block';rb.innerHTML=`<strong>✅ Video Generated!</strong><div style="font-size:11px;color:#888;margin:4px 0">${prompt}</div><div style="background:#000;border:1px dashed #333;height:140px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-top:8px">🎬 Your AI Video Ready</div>`;gb.disabled=false;gb.innerText='🚀 Generate AI Video'}},200)});
+                                      </script>
+                                      </body>
+                                      </html>
