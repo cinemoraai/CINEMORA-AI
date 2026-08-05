@@ -141,72 +141,73 @@
 
                                                                         // TODO: PASTE YOUR FIREBASE CONFIG HERE
                                                                         const firebaseConfig = {
-                                                                          apiKey: "YOUR_API_KEY",
-                                                                            authDomain: "YOUR_PROJECT.firebaseapp.com",
-                                                                              projectId: "YOUR_PROJECT_ID",
-                                                                                storageBucket: "YOUR_PROJECT.appspot.com",
-                                                                                  messagingSenderId: "YOUR_SENDER_ID",
-                                                                                    appId: "YOUR_APP_ID"
-                                                                                    };
+                                                                          apiKey: "AIzaSyAXtzsTkbgfsaiKzmlEwdDGqIpbzP4FsHQ",
+                                                                            authDomain: "cinemora-ai-14d81.firebaseapp.com",
+                                                                              projectId: "cinemora-ai-14d81",
+                                                                                storageBucket: "cinemora-ai-14d81.firebasestorage.app",
+                                                                                  messagingSenderId: "1032996592948",
+                                                                                    appId: "1:1032996592948:web:b3d43cc3e6f6b8d60a5961",
+                                                                                      measurementId: "G-PLKW7HW5P0"
+                                                                                      };
 
-                                                                                    const app = initializeApp(firebaseConfig);
-                                                                                    const auth = getAuth(app);
-                                                                                    const db = getFirestore(app);
+                                                                                      const app = initializeApp(firebaseConfig);
+                                                                                      const auth = getAuth(app);
+                                                                                      const db = getFirestore(app);
 
-                                                                                    // Auth check
-                                                                                    onAuthStateChanged(auth, async (user) => {
-                                                                                      if (!user) {
-                                                                                          window.location.href = "login.html"; // redirect if not logged in
-                                                                                              return;
-                                                                                                }
-                                                                                                  console.log("Logged in:", user.email);
-                                                                                                    
-                                                                                                      // Load credits from Firestore
-                                                                                                        const userRef = doc(db, "users", user.uid);
-                                                                                                          const snap = await getDoc(userRef);
-                                                                                                            if (snap.exists()) {
-                                                                                                                const data = snap.data();
-                                                                                                                    const creditEl = document.querySelectorAll(".stat-num")[1];
-                                                                                                                        if(creditEl) creditEl.textContent = data.credits || 850;
-                                                                                                                          } else {
-                                                                                                                              // Create new user doc with 850 credits
-                                                                                                                                  await setDoc(userRef, { email: user.email, credits: 850, videos: 24 });
-                                                                                                                                    }
-                                                                                                                                    });
-
-                                                                                                                                    // Logout
-                                                                                                                                    document.querySelector(".logout")?.addEventListener("click", () => {
-                                                                                                                                      signOut(auth).then(()=> window.location.href="login.html");
+                                                                                      // Auth check
+                                                                                      onAuthStateChanged(auth, async (user) => {
+                                                                                        if (!user) {
+                                                                                            window.location.href = "login.html"; // redirect if not logged in
+                                                                                                return;
+                                                                                                  }
+                                                                                                    console.log("Logged in:", user.email);
+                                                                                                      
+                                                                                                        // Load credits from Firestore
+                                                                                                          const userRef = doc(db, "users", user.uid);
+                                                                                                            const snap = await getDoc(userRef);
+                                                                                                              if (snap.exists()) {
+                                                                                                                  const data = snap.data();
+                                                                                                                      const creditEl = document.querySelectorAll(".stat-num")[1];
+                                                                                                                          if(creditEl) creditEl.textContent = data.credits || 850;
+                                                                                                                            } else {
+                                                                                                                                // Create new user doc with 850 credits
+                                                                                                                                    await setDoc(userRef, { email: user.email, credits: 850, videos: 24 });
+                                                                                                                                      }
                                                                                                                                       });
 
-                                                                                                                                      // Generate video - deduct 1 credit
-                                                                                                                                      document.querySelector(".btn-generate")?.addEventListener("click", async () => {
-                                                                                                                                        const user = auth.currentUser;
-                                                                                                                                          if(!user) return;
-                                                                                                                                            const userRef = doc(db, "users", user.uid);
-                                                                                                                                              const snap = await getDoc(userRef);
-                                                                                                                                                let credits = snap.data()?.credits || 0;
-                                                                                                                                                  if(credits <= 0){ alert("No credits! Go to Get Free Credits"); return; }
-                                                                                                                                                    credits--;
-                                                                                                                                                      await setDoc(userRef, { credits }, { merge: true });
-                                                                                                                                                        document.querySelectorAll(".stat-num")[1].textContent = credits;
-                                                                                                                                                          document.querySelector(".result").style.display = "block";
-                                                                                                                                                            alert("Video generated! -1 credit");
-                                                                                                                                                            });
+                                                                                                                                      // Logout
+                                                                                                                                      document.querySelector(".logout")?.addEventListener("click", () => {
+                                                                                                                                        signOut(auth).then(()=> window.location.href="login.html");
+                                                                                                                                        });
 
-                                                                                                                                                            // Expose for ad.html to add credits
-                                                                                                                                                            window.addCredits = async (amount) => {
-                                                                                                                                                              const user = auth.currentUser;
-                                                                                                                                                                if(!user) return;
-                                                                                                                                                                  const userRef = doc(db, "users", user.uid);
-                                                                                                                                                                    const snap = await getDoc(userRef);
-                                                                                                                                                                      let credits = snap.data()?.credits || 0;
-                                                                                                                                                                        credits += amount;
-                                                                                                                                                                          await setDoc(userRef, { credits }, { merge: true });
-                                                                                                                                                                            return credits;
-                                                                                                                                                                            }
-                                                                                                                                                                            </script>
+                                                                                                                                        // Generate video - deduct 1 credit
+                                                                                                                                        document.querySelector(".btn-generate")?.addEventListener("click", async () => {
+                                                                                                                                          const user = auth.currentUser;
+                                                                                                                                            if(!user) return;
+                                                                                                                                              const userRef = doc(db, "users", user.uid);
+                                                                                                                                                const snap = await getDoc(userRef);
+                                                                                                                                                  let credits = snap.data()?.credits || 0;
+                                                                                                                                                    if(credits <= 0){ alert("No credits! Go to Get Free Credits"); return; }
+                                                                                                                                                      credits--;
+                                                                                                                                                        await setDoc(userRef, { credits }, { merge: true });
+                                                                                                                                                          document.querySelectorAll(".stat-num")[1].textContent = credits;
+                                                                                                                                                            document.querySelector(".result").style.display = "block";
+                                                                                                                                                              alert("Video generated! -1 credit");
+                                                                                                                                                              });
 
-                                                                                                                                                                            </body>
-                                                                                                                                                                            </html>
-                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                              // Expose for ad.html to add credits
+                                                                                                                                                              window.addCredits = async (amount) => {
+                                                                                                                                                                const user = auth.currentUser;
+                                                                                                                                                                  if(!user) return;
+                                                                                                                                                                    const userRef = doc(db, "users", user.uid);
+                                                                                                                                                                      const snap = await getDoc(userRef);
+                                                                                                                                                                        let credits = snap.data()?.credits || 0;
+                                                                                                                                                                          credits += amount;
+                                                                                                                                                                            await setDoc(userRef, { credits }, { merge: true });
+                                                                                                                                                                              return credits;
+                                                                                                                                                                              }
+                                                                                                                                                                              </script>
+
+                                                                                                                                                                              </body>
+                                                                                                                                                                              </html>
+                                                                                                                                                                              
