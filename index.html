@@ -1,113 +1,212 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CINEMORA AI</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#050507;color:#fff;min-height:100vh;display:flex}
-.sidebar{width:220px;background:#0a0a0f;border-right:1px solid #1a1a1f;padding:20px;display:flex;flex-direction:column;flex-shrink:0}
-.logo{font-size:20px;font-weight:800;margin-bottom:30px}
-.logo span{color:#7c3aed}
-.nav a{display:block;padding:12px;border-radius:10px;color:#888;text-decoration:none;margin-bottom:6px;font-size:14px}
-.nav a.active{background:#15151c;color:#fff}
-.main{flex:1;padding:24px;overflow-y:auto;min-width:0}
-.top{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.box{background:#11111a;border:1px solid #1f1f28;border-radius:14px;padding:16px}
-.box h3{font-size:22px}
-.box p{font-size:11px;color:#888}
-.card{background:#111117;border:1px solid #232330;border-radius:18px;padding:20px;max-width:700px}
-textarea{width:100%;background:#0a0a0f;border:1px solid #232330;border-radius:12px;padding:14px;color:#fff;font-size:14px;outline:none;resize:none}
-.pills{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-.pill{padding:6px 12px;border-radius:20px;background:#1a1a24;border:1px solid #2a2a38;font-size:11px;color:#aaa;cursor:pointer}
-.pill.active{background:#7c3aed;color:#fff;border-color:#7c3aed}
-.btn{width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#ec4899);border:none;border-radius:12px;color:#fff;font-weight:700;font-size:14px;cursor:pointer}
-.progress{height:6px;background:#1a1a24;border-radius:10px;overflow:hidden;margin-top:12px;display:none}
-.progress div{height:100%;width:0%;background:#7c3aed;transition:width 0.3s}
-#result{display:none;margin-top:14px;background:#0a0a0f;border:1px solid #2a2a38;border-radius:12px;padding:14px}
-.user{margin-top:auto;background:#11111a;border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px}
-.auth{width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#050507}
-.auth-card{background:#111117;border:1px solid #232330;border-radius:18px;padding:24px;width:90%;max-width:360px}
-.auth-card input{width:100%;padding:12px;background:#0a0a0f;border:1px solid #232330;border-radius:10px;color:#fff;margin-bottom:10px;outline:none}
-.auth-card button{width:100%;padding:12px;background:#7c3aed;border:none;border-radius:10px;color:#fff;font-weight:600;cursor:pointer}
-.link{color:#a78bfa;text-align:center;display:block;margin-top:10px;font-size:12px;cursor:pointer}
-#dash{display:none;width:100%}
-#auth{display:flex}
-.mobile-top{display:none}
-/* PHONE FIX */
-@media (max-width: 768px){
-  body{flex-direction:column}
-    .sidebar{width:100%;padding:12px;border-right:none;border-bottom:1px solid #1a1a1f;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
-      .sidebar .logo{margin-bottom:0;font-size:16px}
-        .sidebar .nav{display:flex;gap:6px;overflow-x:auto}
-          .sidebar .nav a{padding:8px 10px;white-space:nowrap;margin-bottom:0;font-size:12px}
-            .sidebar .user{display:none}
-              .main{padding:12px}
-                .top{grid-template-columns:repeat(3,1fr);gap:8px}
-                  .box{padding:10px}
-                    .box h3{font-size:16px}
-                      .mobile-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-                        .card{padding:14px}
-                        }
-                        </style>
-                        </head>
-                        <body>
-                        <div id="auth" class="auth">
-                        <div class="auth-card">
-                        <h1 style="text-align:center">🎬 CINEMORA AI</h1>
-                        <p style="text-align:center;color:#666;font-size:11px;margin:6px 0 16px">Professional AI Video Studio</p>
-                        <h3 id="at" style="text-align:center;margin-bottom:12px;font-size:14px">Welcome Back</h3>
-                        <input id="email" type="email" placeholder="Email">
-                        <input id="password" type="password" placeholder="Password">
-                        <button id="ab">Login</button>
-                        <span class="link" id="ta">Don't have account? Create Account</span>
-                        <p id="am" style="text-align:center;margin-top:8px;font-size:11px;color:#ff6b6b"></p>
-                        </div>
-                        </div>
-                        <div id="dash" style="display:none;width:100%">
-                        <div class="sidebar">
-                        <div class="logo">🎬 <span>CINEMORA</span> AI</div>
-                        <div class="nav"><a class="active">🎥 Studio</a><a>📁 Videos</a><a>🎨 Templates</a><a>⚙️ Settings</a></div>
-                        <div class="user"><div style="width:28px;height:28px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">P</div><div style="flex:1;overflow:hidden"><div id="ue" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div><div style="font-size:9px;color:#666">PRO Plan</div></div><button id="lo" style="background:#1f1f28;border:none;color:#fff;padding:5px 8px;border-radius:6px;font-size:10px;cursor:pointer">Logout</button></div>
-                        </div>
-                        <div class="main">
-                        <div class="mobile-top"><div style="font-size:12px;color:#888">Welcome, <span id="ue2" style="color:#fff"></span></div><button id="lo2" style="background:#1f1f28;border:none;color:#fff;padding:6px 10px;border-radius:6px;font-size:10px">Logout</button></div>
-                        <div class="top"><div class="box"><h3>24</h3><p>Videos Generated</p></div><div class="box"><h3>850</h3><p>Credits Left</p></div><div class="box"><h3>12h</h3><p>Time Saved</p></div></div>
-                        <div class="card">
-                        <h2 style="font-size:16px;margin-bottom:12px">✨ AI Video Generator</h2>
-                        <textarea id="pr" rows="3" placeholder="A cute baby laughing in sunny garden, cinematic 4K..."></textarea>
-                        <div class="pills" id="sp"><div class="pill active">Cinematic</div><div class="pill">Anime</div><div class="pill">Realistic</div><div class="pill">3D</div></div>
-                        <div style="display:flex;gap:8px;margin:12px 0"><div style="flex:1;background:#0a0a0f;border:1px solid #232330;border-radius:10px;padding:8px 10px"><label style="font-size:9px;color:#666">RATIO</label><div class="pills" style="margin:4px 0 0"><div class="pill active">16:9</div><div class="pill">9:16</div></div></div><div style="flex:1;background:#0a0a0f;border:1px solid #232330;border-radius:10px;padding:8px 10px"><label style="font-size:9px;color:#666">QUALITY</label><div class="pills" style="margin:4px 0 0"><div class="pill">HD</div><div class="pill active">4K</div></div></div></div>
-                        <button id="gb" class="btn">🚀 Generate AI Video</button>
-                        <div class="progress" id="pw"><div id="pb"></div></div>
-                        <div id="result"></div>
-                        </div>
-                        </div>
-                        </div>
-                        <script type="module">
-                        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-                        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-                        const firebaseConfig = {
-                          apiKey: "AIzaSyAXtzsTkbgfsaiKzmlEwdDGqIpbzP4FsHQ",
-                            authDomain: "cinemora-ai-14d81.firebaseapp.com",
-                              projectId: "cinemora-ai-14d81",
-                                storageBucket: "cinemora-ai-14d81.firebasestorage.app",
-                                  messagingSenderId: "1032996592948",
-                                    appId: "1:1032996592948:web:b3d43cc3e6f6b8d60a5961",
-                                      measurementId: "G-PLKW7HW5P0"
-                                      };
-                                      const app = initializeApp(firebaseConfig);
-                                      const auth = getAuth(app);
-                                      const e1=document.getElementById('email'),p1=document.getElementById('password'),ab=document.getElementById('ab'),ta=document.getElementById('ta'),at=document.getElementById('at'),am=document.getElementById('am'),ad=document.getElementById('auth'),dd=document.getElementById('dash'),ue=document.getElementById('ue'),ue2=document.getElementById('ue2'),lo=document.getElementById('lo'),lo2=document.getElementById('lo2');
-                                      let isL=true;
-                                      ta.onclick=()=>{isL=!isL;at.innerText=isL?"Welcome Back":"Create Account";ab.innerText=isL?"Login":"Create Account";ta.innerText=isL?"Don't have account? Create Account":"Already have account? Login";am.innerText=""};
-                                      ab.onclick=async()=>{const e=e1.value.trim(),p=p1.value.trim();if(!e||!p){am.innerText="Fill email and password";return}am.innerText="Please wait...";ab.disabled=true;try{if(isL)await signInWithEmailAndPassword(auth,e,p);else await createUserWithEmailAndPassword(auth,e,p);am.innerText=""}catch(err){am.innerText=err.message}finally{ab.disabled=false}};
-                                      const logout=async()=>{await signOut(auth)};lo.onclick=logout;lo2.onclick=logout;
-                                      onAuthStateChanged(auth,(u)=>{if(u){ad.style.display="none";dd.style.display="flex";ue.innerText=u.email;ue2.innerText=u.email}else{ad.style.display="flex";dd.style.display="none"}});
-                                      const gb=document.getElementById('gb'),pr=document.getElementById('pr'),rb=document.getElementById('result'),pw=document.getElementById('pw'),pb=document.getElementById('pb');
-                                      document.querySelectorAll('#sp .pill').forEach(p=>{p.onclick=()=>{document.querySelectorAll('#sp .pill').forEach(x=>x.classList.remove('active'));p.classList.add('active')}});
-                                      gb.addEventListener('click',()=>{const prompt=pr.value.trim();if(!prompt){alert('Write prompt!');return}gb.disabled=true;gb.innerText='⏳ Generating...';rb.style.display='none';pw.style.display='block';pb.style.width='0%';let w=0;const iv=setInterval(()=>{w+=10;pb.style.width=w+'%';if(w>=100){clearInterval(iv);pw.style.display='none';rb.style.display='block';rb.innerHTML=`<strong>✅ Video Generated!</strong><div style="font-size:11px;color:#888;margin:4px 0">${prompt}</div><div style="background:#000;border:1px dashed #333;height:140px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-top:8px">🎬 Your AI Video Ready</div>`;gb.disabled=false;gb.innerText='🚀 Generate AI Video'}},200)});
-                                      </script>
-                                      </body>
-                                      </html>
+<html lang="en">
+<head><!-- PLAYABLE_TOUCH_PATCH_V1 --><script>
+(function() {
+  if (window.__playableTouchPatchInstalled) return;
+    window.__playableTouchPatchInstalled = true;
+      var origAdd = EventTarget.prototype.addEventListener;
+        var blockedTypes = { touchstart: 1, touchmove: 1, wheel: 1 };
+          EventTarget.prototype.addEventListener = function(type, listener, options) {
+              if (blockedTypes[type]) {
+                    if (options === undefined || options === null) {
+                            options = { passive: true };
+                                  } else if (typeof options === 'boolean') {
+                                          options = { capture: options, passive: true };
+                                                } else {
+                                                        options = Object.assign({}, options, { passive: true });
+                                                              }
+                                                                  }
+                                                                      return origAdd.call(this, type, listener, options);
+                                                                        };
+                                                                        })();
+                                                                        </script><script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+                                                                        <meta charset="UTF-8">
+                                                                        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+                                                                        <title>CINEMORA AI - Dashboard</title>
+                                                                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+                                                                        <style>
+                                                                        *{margin:0;padding:0;box-sizing:border-box}
+                                                                        body{background:#050507;font-family:'Inter',sans-serif;color:white;min-height:100vh;padding-bottom:80px}
+                                                                        .container{max-width:520px;margin:0 auto;padding:16px 16px 0}
+                                                                        .header{display:flex;justify-content:space-between;align-items:center;padding:12px 0 20px}
+                                                                        .logo-wrap{text-align:center;flex:1}
+                                                                        .logo{display:flex;align-items:center;justify-content:center;gap:1px;font-weight:800;font-size:32px;letter-spacing:1px}
+                                                                        .logo .aperture{width:36px;height:36px;background:#7c3aed;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin:0 2px;position:relative}
+                                                                        .logo .aperture::before{content:'◉';font-size:22px;color:white}
+                                                                        .logo-sub{font-size:14px;letter-spacing:8px;color:#aaa;margin-top:2px;font-weight:300}
+                                                                        .logout{border:1px solid #2a2a3a;background:#13131a;color:#aaa;padding:6px 14px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:4px}
+                                                                        .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+                                                                        .stat{background:#13131a;border:1px solid #1e1e2a;border-radius:16px;padding:16px 8px;text-align:center}
+                                                                        .stat-icon{font-size:24px;margin-bottom:8px}
+                                                                        .stat-num{font-size:26px;font-weight:800;margin-bottom:4px}
+                                                                        .stat-label{font-size:11px;color:#777;line-height:1.2}
+                                                                        .actions{display:flex;gap:12px;justify-content:center;margin-bottom:20px}
+                                                                        .btn-pro{background:#7c3aed;color:white;border:none;padding:10px 20px;border-radius:24px;font-weight:600;font-size:13px}
+                                                                        .btn-credits{background:transparent;border:1px solid #7c3aed;color:#aaa;padding:10px 20px;border-radius:24px;font-weight:600;font-size:13px}
+                                                                        .generator{background:#12121a;border:1px solid #1e1e2a;border-radius:20px;padding:18px;margin-bottom:16px}
+                                                                        .gen-title{font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+                                                                        .input-box{background:#0c0c12;border:1px solid #1e1e2a;border-radius:12px;padding:12px;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+                                                                        .input-box input{flex:1;background:transparent;border:none;color:white;outline:none;font-size:13px}
+                                                                        .icon-btn{width:32px;height:32px;background:#1e1e2a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+                                                                        .style-label{font-size:13px;color:#888;margin-bottom:8px}
+                                                                        .styles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+                                                                        .style-pill{background:#1a1a24;border:1px solid #252530;color:#aaa;padding:8px 16px;border-radius:20px;font-size:12px}
+                                                                        .style-pill.active{background:#7c3aed;color:white;border-color:#7c3aed}
+                                                                        .btn-generate{width:100%;background:#7c3aed;color:white;border:none;padding:14px;border-radius:12px;font-weight:700;font-size:14px}
+                                                                        .result{background:#0c0c12;border:1px solid #1e1e2a;border-radius:12px;padding:14px;margin-top:16px}
+                                                                        .result-title{font-weight:700;font-size:13px;margin-bottom:4px}
+                                                                        .result-sub{font-size:12px;color:#777;margin-bottom:12px}
+                                                                        .video-placeholder{border:1px dashed #333;border-radius:12px;height:120px;display:flex;align-items:center;justify-content:center;background:#050507}
+                                                                        .hint{font-size:11px;color:#555;text-align:center;margin-top:12px}
+                                                                        .free-card{background:linear-gradient(135deg,#1a102e,#1e1540);border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;margin-top:16px;cursor:pointer}
+                                                                        .free-left{display:flex;align-items:center;gap:10px}
+                                                                        .free-icon{width:40px;height:40px;background:#2a1a4a;border-radius:10px;display:flex;align-items:center;justify-content:center}
+                                                                        .free-title{font-weight:700;font-size:13px}
+                                                                        .free-sub{font-size:11px;color:#888}
+                                                                        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0f0f15;border-top:1px solid #1e1e2a;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:100}
+                                                                        .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#666;font-size:10px;text-decoration:none}
+                                                                        .nav-item.active{color:#7c3aed}
+                                                                        .nav-icon{font-size:20px}
+                                                                        </style>
+                                                                        </head>
+                                                                        <body>
+                                                                        <div class="container">
+                                                                        <div class="header">
+                                                                        <div class="logo-wrap">
+                                                                        <div class="logo">CINEM<div class="aperture"></div>RA</div>
+                                                                        <div class="logo-sub">A I</div>
+                                                                        </div>
+                                                                        <button class="logout">↻ Logout</button>
+                                                                        </div>
+
+                                                                        <div class="stats">
+                                                                        <div class="stat"><div class="stat-icon">🎥</div><div class="stat-num">24</div><div class="stat-label">Videos Generated</div></div>
+                                                                        <div class="stat"><div class="stat-icon">⚡</div><div class="stat-num">850</div><div class="stat-label">Credits Left</div></div>
+                                                                        <div class="stat"><div class="stat-icon">🕐</div><div class="stat-num">12h</div><div class="stat-label">Time Saved</div></div>
+                                                                        </div>
+
+                                                                        <div class="actions">
+                                                                        <button class="btn-pro">✨ Upgrade to PRO</button>
+                                                                        <button class="btn-credits">+ Buy Credits</button>
+                                                                        </div>
+
+                                                                        <div class="generator">
+                                                                        <div class="gen-title">✨ AI Video Generator</div>
+                                                                        <div class="input-box">
+                                                                        <div class="icon-btn">🖼️</div>
+                                                                        <div class="icon-btn">🎬</div>
+                                                                        <input type="text" placeholder="Cinemora logo">
+                                                                        <div class="icon-btn">🎤</div>
+                                                                        </div>
+                                                                        <div class="style-label">Style:</div>
+                                                                        <div class="styles">
+                                                                        <div class="style-pill">Cinematic</div>
+                                                                        <div class="style-pill">Anime</div>
+                                                                        <div class="style-pill">Realistic</div>
+                                                                        <div class="style-pill active">3D</div>
+                                                                        </div>
+                                                                        <button class="btn-generate">✨ Generate AI Video</button>
+                                                                        <div class="result">
+                                                                        <div class="result-title">✅ Video Generated!</div>
+                                                                        <div class="result-sub">Cinemora logo</div>
+                                                                        <div class="video-placeholder">🎬 Your AI Video Ready</div>
+                                                                        </div>
+                                                                        <div class="hint">~30-60s generation • 1 credit per video</div>
+                                                                        </div>
+
+                                                                        <div class="free-card" onclick="window.location.href='ad.html'">
+                                                                        <div class="free-left">
+                                                                        <div class="free-icon">▶️</div>
+                                                                        <div>
+                                                                        <div class="free-title">Get Free Credits</div>
+                                                                        <div class="free-sub">Watch short ads and earn free credits</div>
+                                                                        </div>
+                                                                        </div>
+                                                                        <div>›</div>
+                                                                        </div>
+                                                                        </div>
+
+                                                                        <div class="bottom-nav">
+                                                                        <a class="nav-item active" href="index.html"><div class="nav-icon">🏠</div><div>Home</div></a>
+                                                                        <a class="nav-item" href="ad.html"><div class="nav-icon">🎁</div><div>Get Free Credit</div></a>
+                                                                        <a class="nav-item" href="#"><div class="nav-icon">▶️</div><div>My Video</div></a>
+                                                                        <a class="nav-item" href="#"><div class="nav-icon">⚙️</div><div>Setting</div></a>
+                                                                        </div>
+
+                                                                        <!-- FIREBASE CONFIG - CINEMORA AI -->
+                                                                        <script type="module">
+                                                                        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+                                                                        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+                                                                        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+                                                                        // TODO: PASTE YOUR FIREBASE CONFIG HERE
+                                                                        const firebaseConfig = {
+                                                                          apiKey: "YOUR_API_KEY",
+                                                                            authDomain: "YOUR_PROJECT.firebaseapp.com",
+                                                                              projectId: "YOUR_PROJECT_ID",
+                                                                                storageBucket: "YOUR_PROJECT.appspot.com",
+                                                                                  messagingSenderId: "YOUR_SENDER_ID",
+                                                                                    appId: "YOUR_APP_ID"
+                                                                                    };
+
+                                                                                    const app = initializeApp(firebaseConfig);
+                                                                                    const auth = getAuth(app);
+                                                                                    const db = getFirestore(app);
+
+                                                                                    // Auth check
+                                                                                    onAuthStateChanged(auth, async (user) => {
+                                                                                      if (!user) {
+                                                                                          window.location.href = "login.html"; // redirect if not logged in
+                                                                                              return;
+                                                                                                }
+                                                                                                  console.log("Logged in:", user.email);
+                                                                                                    
+                                                                                                      // Load credits from Firestore
+                                                                                                        const userRef = doc(db, "users", user.uid);
+                                                                                                          const snap = await getDoc(userRef);
+                                                                                                            if (snap.exists()) {
+                                                                                                                const data = snap.data();
+                                                                                                                    const creditEl = document.querySelectorAll(".stat-num")[1];
+                                                                                                                        if(creditEl) creditEl.textContent = data.credits || 850;
+                                                                                                                          } else {
+                                                                                                                              // Create new user doc with 850 credits
+                                                                                                                                  await setDoc(userRef, { email: user.email, credits: 850, videos: 24 });
+                                                                                                                                    }
+                                                                                                                                    });
+
+                                                                                                                                    // Logout
+                                                                                                                                    document.querySelector(".logout")?.addEventListener("click", () => {
+                                                                                                                                      signOut(auth).then(()=> window.location.href="login.html");
+                                                                                                                                      });
+
+                                                                                                                                      // Generate video - deduct 1 credit
+                                                                                                                                      document.querySelector(".btn-generate")?.addEventListener("click", async () => {
+                                                                                                                                        const user = auth.currentUser;
+                                                                                                                                          if(!user) return;
+                                                                                                                                            const userRef = doc(db, "users", user.uid);
+                                                                                                                                              const snap = await getDoc(userRef);
+                                                                                                                                                let credits = snap.data()?.credits || 0;
+                                                                                                                                                  if(credits <= 0){ alert("No credits! Go to Get Free Credits"); return; }
+                                                                                                                                                    credits--;
+                                                                                                                                                      await setDoc(userRef, { credits }, { merge: true });
+                                                                                                                                                        document.querySelectorAll(".stat-num")[1].textContent = credits;
+                                                                                                                                                          document.querySelector(".result").style.display = "block";
+                                                                                                                                                            alert("Video generated! -1 credit");
+                                                                                                                                                            });
+
+                                                                                                                                                            // Expose for ad.html to add credits
+                                                                                                                                                            window.addCredits = async (amount) => {
+                                                                                                                                                              const user = auth.currentUser;
+                                                                                                                                                                if(!user) return;
+                                                                                                                                                                  const userRef = doc(db, "users", user.uid);
+                                                                                                                                                                    const snap = await getDoc(userRef);
+                                                                                                                                                                      let credits = snap.data()?.credits || 0;
+                                                                                                                                                                        credits += amount;
+                                                                                                                                                                          await setDoc(userRef, { credits }, { merge: true });
+                                                                                                                                                                            return credits;
+                                                                                                                                                                            }
+                                                                                                                                                                            </script>
+
+                                                                                                                                                                            </body>
+                                                                                                                                                                            </html>
+                                                                                                                                                                            
