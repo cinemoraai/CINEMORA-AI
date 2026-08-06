@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CINEMORA AI - Dashboard v7.1</title>
+<link rel="manifest" href="./manifest.json?v=7.1"><meta name="theme-color" content="#7c3aed">
+<link rel="icon" href="./icon-192.png?v=7.1"><link rel="apple-touch-icon" href="./icon-192.png?v=7.1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#050507;font-family:'Inter',sans-serif;color:white;min-height:100vh;padding-bottom:90px}
+.container{max-width:520px;margin:0 auto;padding:14px 14px 0}
+.header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 18px;position:sticky;top:0;background:#050507;z-index:10}
+.logo-wrap{text-align:center;flex:1}.logo{display:flex;align-items:center;justify-content:center;gap:2px;font-weight:900;font-size:30px;letter-spacing:1.2px}
+.logo .aperture{width:34px;height:34px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin:0 2px;box-shadow:0 0 20px rgba(124,58,237,0.5)}
+.logo .aperture::before{content:'◉';font-size:20px;color:white}.logo-sub{font-size:11px;letter-spacing:10px;color:#7c3aed;margin-top:1px;font-weight:700}
+.badge-pro{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:800}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.stat{background:linear-gradient(135deg,#13131a,#1a1a28);border:1px solid #1e1e2a;border-radius:16px;padding:14px 6px;text-align:center;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#7c3aed,transparent)}
+.stat-icon{font-size:22px;margin-bottom:6px}.stat-num{font-size:22px;font-weight:900;margin-bottom:2px}.stat-label{font-size:10px;color:#777;line-height:1.1}
+.actions{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.btn-pro{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;border:none;padding:10px 18px;border-radius:24px;font-weight:700;font-size:12px;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,0.3)}
+.btn-credits{background:transparent;border:1px solid #7c3aed;color:#a78bfa;padding:10px 18px;border-radius:24px;font-weight:600;font-size:12px;cursor:pointer}
+.generator{background:#0f0f17;border:1px solid #1e1e2a;border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.gen-title{font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:12px}
+.input-box{background:#0a0a12;border:1.5px solid #1e1e2a;border-radius:14px;padding:12px;display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
+.input-box textarea{flex:1;background:transparent;border:none;color:white;outline:none;font-size:13px;resize:none;min-height:60px;font-family:'Inter',sans-serif;line-height:1.5}
+.icon-btn{width:32px;height:32px;background:#1e1e2a;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer}
+.style-label{font-size:11px;color:#888;margin-bottom:7px;font-weight:600}.styles{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.style-pill{background:#1a1a24;border:1px solid #252530;color:#999;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer}
+.style-pill.active{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;border-color:#7c3aed;box-shadow:0 4px 12px rgba(124,58,237,0.3)}
+.btn-generate{width:100%;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;border:none;padding:15px;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 8px 24px rgba(124,58,237,0.35)}
+.result{display:none;background:#0c0c12;border:1px solid #1e1e2a;border-radius:14px;padding:14px;margin-top:14px}.result.show{display:block}
+.video-placeholder{border:1px dashed #333;border-radius:12px;height:120px;display:flex;align-items:center;justify-content:center;background:#050507}
+.free-card{background:linear-gradient(135deg,#1a102e,#1e1540);border:1px solid rgba(124,58,237,0.3);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;margin-top:14px;cursor:pointer}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,15,21,0.95);backdrop-filter:blur(20px);border-top:1px solid #1e1e2a;display:flex;justify-content:space-around;padding:10px 0 14px;z-index:100}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:#666;font-size:10px;font-weight:600;text-decoration:none;min-width:60px}.nav-item.active{color:#7c3aed}.nav-icon{font-size:20px}
+</style></head>
+<body><div class="container">
+<div class="header"><div class="logo-wrap"><div class="logo">CINEM<div class="aperture"></div>RA</div><div class="logo-sub">AI</div></div><div class="badge-pro">PRO v7.1</div></div>
+
+<div class="stats">
+<div class="stat"><div class="stat-icon">🎥</div><div class="stat-num" id="stat-videos">0</div><div class="stat-label">Videos Generated</div></div>
+<div class="stat"><div class="stat-icon">⚡</div><div class="stat-num" id="stat-credits">850</div><div class="stat-label">Credits Left</div></div>
+<div class="stat"><div class="stat-icon">🕐</div><div class="stat-num">24h</div><div class="stat-label">Time Saved</div></div>
+</div>
+
+<div class="actions">
+<button class="btn-pro" onclick="location.href='./payment.html?v=7.1'">💎 Buy Credits - Custom</button>
+<button class="btn-credits" onclick="location.href='./ad.html?v=7.1'">+ Earn Free</button>
+</div>
+
+<div class="generator">
+<div class="gen-title">✨ AI Video Generator</div>
+<div class="input-box"><textarea id="promptInput" placeholder="Describe your video idea... e.g. A cinematic mountain top at sunset, drone shot"></textarea><div class="icon-btn">🎤</div></div>
+<div class="style-label">Style:</div>
+<div class="styles">
+<div class="style-pill active" data-style="Cinematic">Cinematic</div>
+<div class="style-pill" data-style="Anime">Anime</div>
+<div class="style-pill" data-style="Realistic">Realistic</div>
+<div class="style-pill" data-style="3D">3D</div>
+</div>
+<button class="btn-generate" id="generateBtn" onclick="generateVideo()">✨ Generate AI Video • 1 ⚡</button>
+<div class="result" id="resultBox"><div style="font-weight:700;font-size:13px;margin-bottom:6px">✅ Video Generated!</div><div class="video-placeholder" id="videoPlaceholder">🎬 Your AI Video Ready - Preview</div></div>
+<div style="font-size:10px;color:#555;text-align:center;margin-top:10px">~30-60s generation • 1 credit per video • Stored in My Videos</div>
+</div>
+
+<div class="free-card" onclick="location.href='./ad.html?v=7.1'">
+<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;background:#2a1a4a;border-radius:10px;display:flex;align-items:center;justify-content:center">▶️</div><div><div style="font-weight:700;font-size:13px">Get Free Credits</div><div style="font-size:11px;color:#888">Watch ads and earn 100 daily</div></div></div><div>›</div>
+</div>
+
+<div style="background:#0f0f17;border:1px solid #1e1e2a;border-radius:16px;padding:16px;margin-top:16px;margin-bottom:16px">
+<div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+<a href="./about.html?v=7.1" style="color:#a78bfa;text-decoration:none;font-size:11px;font-weight:600">About</a>
+<span style="color:#2a2a3a">•</span>
+<a href="./contact.html?v=7.1" style="color:#a78bfa;text-decoration:none;font-size:11px;font-weight:600">Contact</a>
+<span style="color:#2a2a3a">•</span>
+<a href="./privacy.html?v=7.1" style="color:#a78bfa;text-decoration:none;font-size:11px;font-weight:600">Privacy</a>
+<span style="color:#2a2a3a">•</span>
+<a href="./terms.html?v=7.1" style="color:#a78bfa;text-decoration:none;font-size:11px;font-weight:600">Terms</a>
+</div>
+<div style="text-align:center;margin-top:10px;font-size:9px;color:#555;line-height:1.4">
+CINEMORA PRO v7.1 • Bank Transfer Available • Email: rjsaid49@gmail.com<br>
+Mountain Top Edition 🏔️ • Secure Payments
+</div>
+</div>
+</div>
+<div class="bottom-nav">
+<a class="nav-item" href="./index.html?v=7.1"><div class="nav-icon">🏠</div><div>Home</div></a>
+<a class="nav-item" href="./ad.html?v=7.1"><div class="nav-icon">🎁</div><div>Earn</div></a>
+<a class="nav-item" href="./my-videos.html?v=7.1"><div class="nav-icon">▶️</div><div>My Videos</div></a>
+<a class="nav-item" href="./settings.html?v=7.1"><div class="nav-icon">⚙️</div><div>Settings</div></a>
+</div>
+<script>
+// Connected credits system - shared across all pages via localStorage
+function loadCredits(){
+  let credits = localStorage.getItem('cinemora_credits');
+  if(!credits){ localStorage.setItem('cinemora_credits','850'); credits='850'; }
+  document.getElementById('stat-credits').textContent = credits;
+  let videos = JSON.parse(localStorage.getItem('cinemora_videos')||'[]');
+  document.getElementById('stat-videos').textContent = videos.length;
+}
+loadCredits();
+
+document.querySelectorAll('.style-pill').forEach(pill=>{
+  pill.addEventListener('click',()=>{
+    document.querySelectorAll('.style-pill').forEach(p=>p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+
+function generateVideo(){
+  let prompt = document.getElementById('promptInput').value.trim();
+  if(!prompt){ alert('Enter a prompt first!'); return; }
+  let credits = parseInt(localStorage.getItem('cinemora_credits')||'850');
+  if(credits<1){ alert('No credits! Go to Earn page'); location.href='./ad.html?v=7.1'; return; }
+  credits--; localStorage.setItem('cinemora_credits',credits.toString());
+  document.getElementById('stat-credits').textContent = credits;
+  let videos = JSON.parse(localStorage.getItem('cinemora_videos')||'[]');
+  videos.unshift({prompt:prompt,time:new Date().toLocaleString(),style:document.querySelector('.style-pill.active').dataset.style});
+  localStorage.setItem('cinemora_videos',JSON.stringify(videos.slice(0,20)));
+  document.getElementById('stat-videos').textContent = videos.length;
+  document.getElementById('resultBox').classList.add('show');
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth'});
+  localStorage.setItem('last_prompt',prompt);
+}
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js?v=7.1'); }
+</script></body></html>
