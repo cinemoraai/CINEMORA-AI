@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEMORA - Updating...</title>
+<style>body{background:#050507;color:white;font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center} .box{background:#0f0f17;border:1px solid #7c3aed;border-radius:20px;padding:30px;max-width:400px} .spinner{width:40px;height:40px;border:3px solid #1e1e2a;border-top:3px solid #7c3aed;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px} @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+</head><body>
+<div class="box">
+<div class="spinner"></div>
+<div style="font-weight:800;font-size:18px">CINEMORA PRO v7.2</div>
+<div style="font-size:12px;color:#a78bfa;margin-top:8px" id="status">Clearing old cache...</div>
+<div style="font-size:10px;color:#555;margin-top:16px">One link = Always NEW version</div>
+</div>
+<script>
+async function forceUpdate(){
+  const status = document.getElementById('status');
+  try {
+    // 1. Unregister all service workers
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (let r of regs) {
+        await r.unregister();
+        status.textContent = 'Removing old app...';
+      }
+    }
+    // 2. Delete all caches
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      for (let k of keys) {
+        await caches.delete(k);
+        status.textContent = 'Deleting old version: ' + k;
+      }
+    }
+    // 3. Clear localStorage version markers
+    localStorage.setItem('cinemora_version', '7.2');
+    
+    status.textContent = 'Loading NEW v7.2...';
+    status.style.color = '#22c55e';
+    
+    // 4. Force redirect to NEW version with cache-bust timestamp
+    setTimeout(()=>{
+      const ts = Date.now();
+      window.location.href = './index.html?v=7.2&ts=' + ts + '&nocache=1';
+    }, 1200);
+    
+  } catch(e){
+    // If fails, force anyway
+    window.location.href = './index.html?v=7.2&force=' + Date.now();
+  }
+}
+forceUpdate();
+</script>
+</body></html>
