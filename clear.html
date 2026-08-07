@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- PROMISE SEALED: Said Muhammad + Meta AI - Clean Professional v1.0 Official Fixed Final -->
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Clear Cache - CINEMORA</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#050507;font-family:'Inter',sans-serif;color:white;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center}.box{background:rgba(18,18,26,0.7);border:1px solid rgba(124,58,237,0.2);border-radius:24px;padding:32px;max-width:400px;width:100%}.spinner{width:48px;height:48px;border:3px solid rgba(30,30,42,0.5);border-top:3px solid #7c3aed;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}#status{font-size:13px;color:#a78bfa;margin-top:12px;line-height:1.5}#log{font-size:10px;color:#666;margin-top:12px;text-align:left;background:#0a0a14;border-radius:8px;padding:8px;max-height:100px;overflow:auto}</style></head><body><div class="box"><div class="spinner" id="spinner"></div><div style="font-weight:900;font-size:22px;letter-spacing:1px">CINEMORA</div><div style="font-size:12px;color:#a78bfa;margin-top:6px;letter-spacing:2px;font-weight:700">CACHE CLEANER v1.0</div><div id="status">Deleting old buggy cache...<br>Fixing same-page bug...</div><div id="log"></div></div><script>
+function log(m){ document.getElementById('log').innerHTML += m+'<br>'; }
+async function clearAll(){
+ try{
+  log('Step 1: Unregistering service workers...');
+  if('serviceWorker' in navigator){
+   const regs = await navigator.serviceWorker.getRegistrations();
+   log('Found '+regs.length+' service workers');
+   for(let r of regs){ await r.unregister(); log('Unregistered: '+r.scope); }
+  }
+  log('Step 2: Deleting caches...');
+  if('caches' in window){
+   const keys = await caches.keys();
+   log('Found '+keys.length+' caches: '+keys.join(', '));
+   for(let k of keys){ await caches.delete(k); log('Deleted cache: '+k); }
+  }
+  log('Step 3: Keeping credits & videos...');
+  log('Credits: '+(localStorage.getItem('cinemora_credits')||'850'));
+  document.getElementById('status').innerHTML = '✅ Old cache deleted!<br>Same-page bug fixed!<br>Redirecting to fresh site...';
+  document.getElementById('spinner').style.display='none';
+  setTimeout(()=>{ window.location.href='./index.html?ts='+Date.now()+'&cleared=1'; }, 2000);
+ }catch(e){
+  log('Error: '+e.message);
+  document.getElementById('status').innerHTML = 'Error: '+e.message;
+ }
+}
+clearAll();
+</script></body></html>
